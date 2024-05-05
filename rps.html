@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('Pixel_Art_Background.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffa500;
+            margin-bottom: 20px;
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .result {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        .choices {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px; /* Increased space */
+        }
+        .choice {
+            margin: 0 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+            position: relative;
+        }
+        .choice img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .choice:hover {
+            transform: translateY(-5px);
+        }
+        .choice:hover::before {
+            content: attr(data-choice);
+            display: block;
+            position: absolute;
+            top: -30px;
+            color: #ffa500;
+            font-weight: bold;
+            font-size: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .choice img:hover {
+            transform: scale(1.1);
+        }
+        .player-text,
+        .computer-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffa500;
+            margin-bottom: 10px;
+        }
+        .winner-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffa500;
+            margin-bottom: 20px;
+        }
+        .versus-text {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 20px; /* Added space */
+        }
+        .return-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ffa500;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .return-button:hover {
+            background-color: #ff7f00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title">Rock Paper Scissors</div>
+    <div class="winner-message"></div>
+    <div class="result">
+        Choose your move:
+    </div>
+    <div class="choices">
+        <div class="choice" data-choice="Rock">
+            <img src="rock.jpg" alt="Rock">
+        </div>
+        <div class="choice" data-choice="Paper">
+            <img src="paper.jpg" alt="Paper">
+        </div>
+        <div class="choice" data-choice="Scissors">
+            <img src="scissor.jpg" alt="Scissors">
+        </div>
+    </div>
+    <div class="versus-text">You vs. Computer</div>
+    <button class="return-button">Return</button>
+</div>
+
+<script>
+    const choices = document.querySelectorAll('.choice');
+    const result = document.querySelector('.result');
+    const winnerMessage = document.querySelector('.winner-message');
+    const returnButton = document.querySelector('.return-button');
+
+    choices.forEach(choice => {
+        choice.addEventListener('click', () => {
+            const playerChoice = choice.dataset.choice;
+            const computerChoice = getComputerChoice();
+            const winner = getWinner(playerChoice, computerChoice);
+            showResult(playerChoice, computerChoice, winner);
+        });
+    });
+
+    function getComputerChoice() {
+        const randomIndex = Math.floor(Math.random() * 3);
+        const choices = ['Rock', 'Paper', 'Scissors'];
+        return choices[randomIndex];
+    }
+
+    function getWinner(player, computer) {
+        if (player === computer) {
+            return 'draw';
+        } else if (
+            (player === 'Rock' && computer === 'Scissors') ||
+            (player === 'Paper' && computer === 'Rock') ||
+            (player === 'Scissors' && computer === 'Paper')
+        ) {
+            return 'player';
+        } else {
+            return 'computer';
+        }
+    }
+
+    function showResult(player, computer, winner) {
+        const choices = {
+            Rock: 'Rock',
+            Paper: 'Paper',
+            Scissors: 'Scissors'
+        };
+
+        const messages = {
+            player: 'You win!',
+            computer: 'Computer wins!',
+            draw: 'It\'s a draw!'
+        };
+
+        const playerChoiceText = choices[player];
+        const computerChoiceText = choices[computer];
+        const message = messages[winner];
+
+        winnerMessage.innerHTML = `${message}`;
+        result.innerHTML = `You chose ${playerChoiceText} and the computer chose ${computerChoiceText}.`;
+    }
+
+    returnButton.addEventListener('click', () => {
+        window.location.href = "Website 3.html"; // Replace index.html with the desired return destination
+    });
+</script>
+
+</body>
+</html>
+
+

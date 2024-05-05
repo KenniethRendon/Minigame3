@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minigame</title>
+    <style>
+        @font-face {
+            font-family: 'MyFont';
+            src: url('PixeloidSansBold.ttf') format('truetype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-shadow: 1px 1px 1px white; /* White outline */
+        }
+        body {
+            font-family: 'MyFont', sans-serif;
+            font-size: 20px;
+            background-image: url('Pixel_Art_Background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 20px 0; /* Add some space at the top */
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Align content vertically */
+            min-height: 100vh;
+        }
+        .description {
+            margin-top: 10px;
+            text-align: justify;
+            max-width: 40%; /* Limiting the width for better readability */
+        }
+        header, nav {
+            text-align: center;
+            margin-bottom: 200px;
+        }
+        header h1, nav a {
+            color: black;
+            text-decoration: none;
+            margin-bottom: -200px; /* Reduce space between header and content */
+        }
+        h1 {
+            margin-bottom: 5px; /* Reduce space between Tic Tac Toe and content */
+        }
+        .image-container {
+            margin-top: 20px; /* Adjust margin */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Minigames</h1>
+        
+</header>
+<br>
+<center>Click the image to play!</center>
+
+<div class="container">
+
+<h1 style="margin-bottom: 5px;">Tic Tac Toe</h1> <!-- Reduce space between Tic Tac Toe and content -->
+<br>
+
+<a href="tic tac toe.html">
+    <img src="tto2.png" alt="Your Image Description" width="200" height="200">
+</a>
+
+<div class="description">
+    <p>Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.</p>
+    <br>
+    <br>
+    
+</div>
+<h1 style="margin-bottom: 5px;">Rock paper scissors</h1>
+<div class="image-container">
+    <a href="rps.html">
+        <img src="rockpaperscissors.jpg" alt="Rock Paper Scissors" width="200" height="200">
+    </a>
+</div>
+
+<div class="description">
+    <p>Rock paper scissors is an intransitive hand game, usually played between two people, in which each player simultaneously forms one of three shapes with an outstretched hand. These shapes are "rock", "paper", and "scissors".</p>
+</div>
+
+</div>
+
+</body>
+</html>
