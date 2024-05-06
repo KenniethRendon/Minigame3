@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,37 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <style>
-        @font-face {
-            font-family: 'Pixeloid Sans Bold';
-            src: url('PixeloidSansBold.ttf') format('truetype');
-        }
-
         body {
+            font-family: Arial, sans-serif;
             background-image: url('Pixel_Art_Background.jpg');
             background-size: cover;
             background-position: center;
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: 'Pixeloid Sans Bold', Arial, sans-serif;
-            color: #fff;
+            height: 100vh;
         }
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
         }
         .board {
             display: grid;
             grid-template-columns: repeat(3, 100px);
             grid-template-rows: repeat(3, 100px);
             gap: 5px;
-            background-color: #000;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
             border-radius: 10px;
-            padding: 10px;
         }
         .cell {
             display: flex;
@@ -50,15 +46,11 @@
         .cell:hover {
             background-color: #444;
         }
-        #winner {
-            margin-top: 20px;
-            margin-bottom: 20px; /* Added margin bottom */
-            font-size: 24px;
-        }
         .button-group {
             margin-top: 20px;
+            display: none; /* Initially hide the button group */
         }
-        .button {
+        .mode-button {
             padding: 10px 20px;
             font-size: 16px;
             background-color: #000;
@@ -67,41 +59,12 @@
             border-radius: 5px;
             cursor: pointer;
             margin-right: 10px;
-            margin-bottom: 10px; /* Added margin bottom */
             position: relative;
         }
-        .button:hover {
+        .mode-button:hover {
             background-color: #333;
         }
-
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #333;
-            margin: 25% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .modal-content h2 {
-            margin-bottom: 20px;
-        }
-
-        .modal-content button {
+        .restart-button {
             padding: 10px 20px;
             font-size: 16px;
             background-color: #000;
@@ -109,126 +72,178 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
             margin-right: 10px;
-            margin-bottom: 10px; /* Added margin bottom */
-            position: relative;
+            display: none; /* Initially hide the restart button */
         }
-
-        .modal-content button:hover {
+        .restart-button:hover {
             background-color: #333;
+        }
+        .return-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: none; /* Initially hide the return button */
+        }
+        .return-button:hover {
+            background-color: #333;
+        }
+        h2 {
+            color: #fff;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: #000;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .mode-button:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
 <body>
-    <h1>Tic Tac Toe</h1>
-    <div id="winner">Winner: </div>
-    <div class="button-group">
-        <button class="button choose-mode-button">Choose Game Mode</button>
-    </div>
-    <div class="board">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-    </div>
 
+<div class="container">
+    <h2>Choose Game Mode</h2>
     <div class="button-group">
-        <button class="button restart-button">Restart Game</button>
-        <button class="button return-button" onclick="window.location.href = 'index.html';">Return</button>
+        <button class="mode-button" id="bot-mode">Play with Bot
+            <span class="tooltip">No friends? :(</span>
+        </button>
+        <button class="mode-button" id="friend-mode">
+            Play with Friend
+            <span class="tooltip">If you have one :(</span>
+        </button>
     </div>
-
-    <!-- Modal HTML -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <h2>Choose Game Mode</h2>
-            <button class="button play-with-bot-button">Play with Bot</button>
+    <div class="board-container"> <!-- Added container for the game board -->
+        <div class="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+    
+        <div class="button-group">
+            <button class="restart-button">Restart Game</button>
+            <button class="return-button" onclick="window.location.href = 'Index.html';">Return</button>
         </div>
     </div>
+</div>
 
-    <script>
-        const cells = document.querySelectorAll('.cell');
-        const restartButton = document.querySelector('.restart-button');
-        const chooseModeButton = document.querySelector('.choose-mode-button');
-        let currentPlayer = 'X';
-        let gameEnded = false;
-        const winnerText = document.getElementById('winner');
+<script>
+    const cells = document.querySelectorAll('.cell');
+    const restartButton = document.querySelector('.restart-button');
+    const botModeButton = document.getElementById('bot-mode');
+    const friendModeButton = document.getElementById('friend-mode');
+    const buttonGroup = document.querySelector('.button-group');
 
+    let currentPlayer = 'X';
+    let gameEnded = false;
+
+    function startGameWithBot() {
+        botModeButton.removeEventListener('click', startGameWithBot);
+        friendModeButton.removeEventListener('click', startGameWithFriend);
+        botModeButton.style.display = 'none';
+        friendModeButton.style.display = 'none';
+        buttonGroup.style.display = 'flex'; // Display the button group
+        startGame(true);
+    }
+
+    function startGameWithFriend() {
+        botModeButton.removeEventListener('click', startGameWithBot);
+        friendModeButton.removeEventListener('click', startGameWithFriend);
+        botModeButton.style.display = 'none';
+        friendModeButton.style.display = 'none';
+        buttonGroup.style.display = 'flex'; // Display the button group
+        startGame(false);
+    }
+
+    botModeButton.addEventListener('click', startGameWithBot);
+    friendModeButton.addEventListener('click', startGameWithFriend);
+
+    function startGame(withBot) {
         cells.forEach(cell => {
+            cell.textContent = '';
             cell.addEventListener('click', () => {
                 if (!gameEnded && !cell.textContent) {
                     cell.textContent = currentPlayer;
-                    checkWinner();
-                    if (!gameEnded) {
+                    if (checkWin()) {
+                        alert(`${currentPlayer} wins!`);
+                        gameEnded = true;
+                    } else if (checkDraw()) {
+                        alert("It's a draw!");
+                        gameEnded = true;
+                    } else {
                         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                        playBotMove();
+                        if (withBot && currentPlayer === 'O') {
+                            playBot();
+                        }
                     }
                 }
             });
         });
+    }
 
-        function checkWinner() {
-            const winningCombos = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
+    function checkWin() {
+        const winningCombos = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
 
-            winningCombos.forEach(combo => {
-                const [a, b, c] = combo;
-                if (
-                    cells[a].textContent &&
-                    cells[a].textContent === cells[b].textContent &&
-                    cells[a].textContent === cells[c].textContent
-                ) {
-                    winnerText.textContent = `Winner: ${cells[a].textContent}`;
-                    gameEnded = true;
-                }
-            });
+        return winningCombos.some(combo => {
+            const [a, b, c] = combo;
+            return cells[a].textContent && cells[a].textContent === cells[b].textContent &&
+                cells[a].textContent === cells[c].textContent;
+        });
+    }
 
-            if (!gameEnded && Array.from(cells).every(cell => cell.textContent)) {
-                winnerText.textContent = "It's a draw!";
-                gameEnded = true;
-            }
+    function checkDraw() {
+        return Array.from(cells).every(cell => cell.textContent);
+    }
+
+    function restartGame() {
+        cells.forEach(cell => {
+            cell.textContent = '';
+        });
+        currentPlayer = 'X';
+        gameEnded = false;
+        botModeButton.style.display = 'inline-block';
+        friendModeButton.style.display = 'inline-block';
+        buttonGroup.style.display = 'none'; // Hide the button group
+        botModeButton.addEventListener('click', startGameWithBot);
+        friendModeButton.addEventListener('click', startGameWithFriend);
+    }
+
+    restartButton.addEventListener('click', restartGame);
+
+    function playBot() {
+        const emptyCells = Array.from(cells).filter(cell => !cell.textContent);
+        if (emptyCells.length > 0) {
+            const randomIndex = Math.floor(Math.random() * emptyCells.length);
+            emptyCells[randomIndex].textContent = currentPlayer === 'X' ? 'O' : 'X';
         }
+    }
+</script>
 
-        restartButton.addEventListener('click', () => {
-            cells.forEach(cell => {
-                cell.textContent = '';
-            });
-            winnerText.textContent = 'Winner: ';
-            currentPlayer = 'X';
-            gameEnded = false;
-        });
-
-        chooseModeButton.addEventListener('click', () => {
-            // Show the modal
-            document.getElementById('myModal').style.display = 'block';
-        });
-
-        document.querySelectorAll('.play-with-bot-button').forEach(button => {
-            button.addEventListener('click', () => {
-                restartButton.click(); // Reset the game
-                // Set up the game to play with the bot
-                currentPlayer = 'X';
-                // Close the modal
-                document.getElementById('myModal').style.display = 'none';
-            });
-        });
-
-        function playBotMove() {
-            const emptyCells = Array.from(cells).filter(cell => !cell.textContent);
-            if (emptyCells.length > 0 && !gameEnded) {
-                const randomIndex = Math.floor(Math.random() * emptyCells.length);
-                emptyCells[randomIndex].textContent = currentPlayer;
-                checkWinner();
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            }
-        }
-    </script>
 </body>
 </html>
