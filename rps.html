@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,73 +101,39 @@
         .return-button:hover {
             background-color: #ff7f00;
         }
-        .game-modes {
-            margin-bottom: 20px;
-        }
-        .game-mode {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #ffa500;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .game-mode:hover {
-            background-color: #ff7f00;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="title">Rock Paper Scissors</div>
-    <div class="game-modes">
-        <button class="game-mode" data-mode="single">Single Player</button>
-        <button class="game-mode" data-mode="multi">Multiplayer</button>
-    </div>
-    <div class="game-setup" style="display: none;">
-        <div class="result">
-            Choose your move:
-        </div>
-        <div class="choices">
-            <div class="choice" data-choice="Rock">
-                <img src="rock.jpg" alt="Rock">
-            </div>
-            <div class="choice" data-choice="Paper">
-                <img src="paper.jpg" alt="Paper">
-            </div>
-            <div class="choice" data-choice="Scissors">
-                <img src="scissor.jpg" alt="Scissors">
-            </div>
-        </div>
-        <div class="versus-text">You vs. Computer</div>
-        <button class="return-button">Return</button>
-    </div>
     <div class="winner-message"></div>
+    <div class="result">
+        Choose your move:
+    </div>
+    <div class="choices">
+        <div class="choice" data-choice="Rock">
+            <img src="rock.jpg" alt="Rock">
+        </div>
+        <div class="choice" data-choice="Paper">
+            <img src="paper.jpg" alt="Paper">
+        </div>
+        <div class="choice" data-choice="Scissors">
+            <img src="scissor.jpg" alt="Scissors">
+        </div>
+    </div>
+    <div class="versus-text">You vs. Computer</div>
+    <button class="return-button">Return</button>
 </div>
 
 <script>
-    const gameModes = document.querySelectorAll('.game-mode');
-    const gameSetup = document.querySelector('.game-setup');
     const choices = document.querySelectorAll('.choice');
     const result = document.querySelector('.result');
     const winnerMessage = document.querySelector('.winner-message');
     const returnButton = document.querySelector('.return-button');
-    let mode = '';
-
-    gameModes.forEach(modeBtn => {
-        modeBtn.addEventListener('click', () => {
-            mode = modeBtn.dataset.mode;
-            gameModes.forEach(btn => btn.style.display = 'none');
-            gameSetup.style.display = 'block';
-        });
-    });
 
     choices.forEach(choice => {
         choice.addEventListener('click', () => {
-            if (mode === '') return; // Ensure a game mode is selected
             const playerChoice = choice.dataset.choice;
             const computerChoice = getComputerChoice();
             const winner = getWinner(playerChoice, computerChoice);
